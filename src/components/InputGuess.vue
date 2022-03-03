@@ -4,6 +4,7 @@
             <Tile :tileType="TILE_STATE.none" :tileLetter="guess[index]" />
         </div>
     </div>
+    <div class="invalid" v-if="invalidGuess">Invalid guess</div>
 </template>
 
 <script>
@@ -43,6 +44,10 @@ export default {
                 let guess = this.guess;
                 guess += event.key
                 this.guess = guess
+
+                // Remove invalid state
+                this.$store.dispatch("newGuess")
+
             }
         }
     },
@@ -72,6 +77,10 @@ export default {
         },
         answer() {
             return this.$store.getters.getCorrectWord;
+        },
+        invalidGuess() {
+            return this.$store.getters.invalidGuess;
+
         }
     },
     components: { Tile }
@@ -81,5 +90,9 @@ export default {
 <style scoped>
 .flex {
     display: flex;
+}
+.invalid {
+    text-align: center;
+    font-size: 1.6rem;
 }
 </style>

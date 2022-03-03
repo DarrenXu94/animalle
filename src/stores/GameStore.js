@@ -20,11 +20,17 @@ const matchLetters = (guess, answer) => {
   }
   return { rowState, hasLost };
 };
+
+const checkIfValidGuess = (guess, options = LIST_OF_ANIMALS) => {
+  return options.includes(guess);
+};
+
 const store = createStore({
   state() {
     return {
       guesses: [],
       boardRows: [],
+      guessInvalid: false,
       // lettersUsed: [],
       correctWord: null,
       gameState: GAME_STATE.waiting,
@@ -34,6 +40,9 @@ const store = createStore({
   getters: {
     getHasWon(state) {
       return state.hasWon;
+    },
+    invalidGuess(state) {
+      return state.guessInvalid;
     },
     getGuesses(state) {
       return state.guesses;
@@ -68,6 +77,9 @@ const store = createStore({
     UPDATE_GUESS(state, payload) {
       state.guesses = payload;
     },
+    UPDATE_GUESSINVALID(state, payload) {
+      state.guessInvalid = payload;
+    },
     UPDATE_BOARDROWS(state, payload) {
       state.boardRows = payload;
     },
@@ -89,7 +101,15 @@ const store = createStore({
     },
   },
   actions: {
+    newGuess(context) {
+      context.commit("UPDATE_GUESSINVALID", false);
+    },
     makeGuess(context, payload) {
+      // Check if guess is legit here
+      if (!checkIfValidGuess(payload)) {
+        context.commit("UPDATE_GUESSINVALID", true);
+        return;
+      }
       // Guessing logic here
       const guesses = context.state.guesses;
       guesses.push(payload);
