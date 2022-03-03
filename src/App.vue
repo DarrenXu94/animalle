@@ -5,10 +5,10 @@
     <div v-if="gameState == GAME_STATE.waiting">
       <NewGame />
     </div>
-    <div v-else-if="gameState == GAME_STATE.playing">
+    <div v-else>
       <Board />
     </div>
-    <div v-else>Game over</div>
+    <!-- <div v-else>Game over</div> -->
   </div>
 </template>
 <script >

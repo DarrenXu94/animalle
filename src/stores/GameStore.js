@@ -25,15 +25,19 @@ const store = createStore({
     return {
       guesses: [],
       boardRows: [],
-      lettersUsed: [],
+      // lettersUsed: [],
       correctWord: null,
       gameState: GAME_STATE.waiting,
+      hasWon: false,
     };
   },
   getters: {
-    lettersUsed(state) {
-      return state.lettersUsed;
+    getHasWon(state) {
+      return state.hasWon;
     },
+    // lettersUsed(state) {
+    //   return state.lettersUsed;
+    // },
     gameState(state) {
       return state.gameState;
     },
@@ -70,6 +74,16 @@ const store = createStore({
     UPDATE_WORD(state, payload) {
       state.correctWord = payload;
     },
+    UPDATE_HAS_WON(state, payload) {
+      state.hasWon = payload;
+    },
+    RESET_ALL(state) {
+      state.guesses = [];
+      state.boardRows = [];
+      state.correctWord = null;
+      state.hasWon = false;
+      state.gameState = GAME_STATE.playing;
+    },
   },
   actions: {
     makeGuess(context, payload) {
@@ -87,8 +101,8 @@ const store = createStore({
         );
 
         if (!hasLost) {
-          console.log("You won!");
           context.commit("UPDATE_GAME_STATE", GAME_STATE.complete);
+          context.commit("UPDATE_HAS_WON", true);
         }
         rows.push(rowState);
       }
@@ -98,7 +112,8 @@ const store = createStore({
     },
     startGame(context) {
       // Start a new game
-      context.commit("UPDATE_GAME_STATE", GAME_STATE.playing);
+      // context.commit("UPDATE_GAME_STATE", GAME_STATE.playing);
+      context.commit("RESET_ALL");
       const animal =
         LIST_OF_ANIMALS[Math.floor(Math.random() * LIST_OF_ANIMALS.length)];
       context.commit("UPDATE_WORD", animal);

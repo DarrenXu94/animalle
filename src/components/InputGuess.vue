@@ -1,7 +1,6 @@
 <template>
-    <div class="flex">
+    <div class="flex" v-if="!isGameOver">
         <div v-for="(char, index) in answer">
-            <!-- <div v-if="guess[index]">{{ guess[index] }}</div> -->
             <Tile :tileType="TILE_STATE.none" :tileLetter="guess[index]" />
         </div>
     </div>
@@ -9,12 +8,14 @@
 
 <script>
 import Tile from "./Tile.vue";
-import { TILE_STATE } from "../consts/consts"
+import { GAME_STATE, TILE_STATE } from "../consts/consts"
 export default {
     name: "InputGuess",
     created() {
-        window.addEventListener('keydown', (event) => {
-
+        window.addEventListener('keydown', this.inputHandler);
+    },
+    methods: {
+        inputHandler(event) {
             if (event.key == "Backspace") {
                 let guess = this.guess;
                 this.guess = guess.slice(0, -1)
@@ -43,7 +44,18 @@ export default {
                 guess += event.key
                 this.guess = guess
             }
-        });
+        }
+    },
+    watch: {
+        gameState(old, newv) {
+            if (old == GAME_STATE.complete) {
+
+                window.removeEventListener('keydown', this.inputHandler)
+            } else {
+                window.addEventListener('keydown', this.inputHandler);
+
+            }
+        }
     },
     data() {
         return {
@@ -52,6 +64,12 @@ export default {
         }
     },
     computed: {
+        isGameOver() {
+            return this.gameState == GAME_STATE.complete
+        },
+        gameState() {
+            return this.$store.getters.gameState;
+        },
         answer() {
             return this.$store.getters.getCorrectWord;
         }

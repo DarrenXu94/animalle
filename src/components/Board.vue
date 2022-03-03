@@ -1,6 +1,10 @@
 <template>
     <!-- Display previous guesses -->
     <div>
+        <div class="flex victoryMessage" v-if="isVictory">
+            You guessed it!
+            <NewGame />
+        </div>
         <div class="flex" v-for="row in board">
             <div v-for="item in row">
                 <Tile :tileType="item.tileType" :tileLetter="item.tileLetter" />
@@ -16,19 +20,35 @@
 <script>
 import Tile from "./Tile.vue"
 import InputGuess from "./InputGuess.vue"
+import NewGame from "./NewGame.vue";
 export default {
     name: "Board",
     computed: {
         board() {
             return this.$store.getters.getBoardState;
-        }
+        },
+        isGameOver() {
+            return this.gameState == GAME_STATE.complete
+        },
+        isVictory() {
+            return this.$store.getters.getHasWon
+        },
+        gameState() {
+            return this.$store.getters.gameState;
+        },
     },
-    components: { Tile, InputGuess }
+    components: { Tile, InputGuess, NewGame }
 }
 </script>
 
 <style scoped>
 .flex {
     display: flex;
+}
+.victoryMessage {
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-direction: column;
+    align-items: center;
 }
 </style>
