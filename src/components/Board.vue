@@ -2,7 +2,7 @@
     <!-- Display previous guesses -->
     <div>
         <div class="flex victoryMessage" v-if="isVictory">
-            You guessed it!
+            You guessed it in {{ getGuesses.length }} guess(es)!
             <NewGame />
         </div>
         <div class="flex" v-for="row in board">
@@ -32,6 +32,9 @@ export default {
         },
         isVictory() {
             return this.$store.getters.getHasWon
+        },
+        getGuesses() {
+            return this.$store.getters.getGuesses
         },
         gameState() {
             return this.$store.getters.gameState;

@@ -35,6 +35,9 @@ const store = createStore({
     getHasWon(state) {
       return state.hasWon;
     },
+    getGuesses(state) {
+      return state.guesses;
+    },
     // lettersUsed(state) {
     //   return state.lettersUsed;
     // },
