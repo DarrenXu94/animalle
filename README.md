@@ -1,4 +1,6 @@
 # animalle
 
 Todo:
-- Picture of animal at end
+- Beter animals list
+- Mobile
+- Game over

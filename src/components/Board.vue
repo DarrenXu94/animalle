@@ -5,6 +5,7 @@
             You guessed it in {{ getGuesses.length }} guess(es)!
             <NewGame />
         </div>
+        <div v-else class="flex victoryMessage">Remaining Guesses {{ remainingGuesses }}</div>
         <div class="boardRow">
             <div class="flex" v-for="row in board">
                 <div v-for="item in row">
@@ -16,6 +17,14 @@
     <!-- Display new guess -->
     <div>
         <InputGuess />
+    </div>
+    <div class="flex victoryMessage" v-if="remainingGuesses == 0">
+        Game Over.
+        <p>
+            The answer was:
+            <span class="answerBold">{{ correctWord.toUpperCase() }}</span>
+        </p>
+        <NewGame />
     </div>
 </template>
 
@@ -38,8 +47,16 @@ export default {
         getGuesses() {
             return this.$store.getters.getGuesses
         },
+        correctWord() {
+            return this.$store.getters.getCorrectWord;
+
+
+        },
         gameState() {
             return this.$store.getters.gameState;
+        },
+        remainingGuesses() {
+            return this.$store.getters.getRemainingGuesses;
         },
     },
     components: { Tile, InputGuess, NewGame }
@@ -58,5 +75,8 @@ export default {
 }
 .boardRow {
     margin-top: 3vh;
+}
+.answerBold {
+    font-weight: bold;
 }
 </style>

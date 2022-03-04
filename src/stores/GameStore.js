@@ -40,6 +40,8 @@ const checkIfValidGuess = (guess, options = LIST_OF_ANIMALS) => {
   return options.includes(guess);
 };
 
+const ALLOWED_GUESSES = 5;
+
 const store = createStore({
   state() {
     return {
@@ -53,6 +55,9 @@ const store = createStore({
     };
   },
   getters: {
+    getRemainingGuesses(state) {
+      return ALLOWED_GUESSES - state.guesses.length;
+    },
     getHasWon(state) {
       return state.hasWon;
     },
@@ -133,6 +138,13 @@ const store = createStore({
       }
       console.log(rows);
       context.commit("UPDATE_BOARDROWS", rows);
+
+      // Check if any guesses remaining
+      if (context.state.guesses.length == ALLOWED_GUESSES) {
+        console.log("Game over?");
+        context.commit("UPDATE_GAME_STATE", GAME_STATE.complete);
+      }
+
       return rows;
     },
     startGame(context) {
