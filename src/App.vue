@@ -10,11 +10,15 @@
     </div>
     <!-- <div v-else>Game over</div> -->
   </div>
+  <div v-if="isVictory">
+    <Picture />
+  </div>
 </template>
 <script >
 import { GAME_STATE } from "./consts/consts"
 import NewGame from "./components/NewGame.vue"
 import Board from "./components/Board.vue"
+import Picture from "./components/Picture.vue"
 
 export default {
   data() {
@@ -22,11 +26,14 @@ export default {
       GAME_STATE
     }
   },
-  components: { NewGame, Board },
+  components: { NewGame, Board, Picture },
   computed: {
     gameState() {
       return this.$store.getters.gameState
-    }
+    },
+    isVictory() {
+      return this.$store.getters.getHasWon
+    },
   }
 }
 </script>
