@@ -2,6 +2,7 @@
     <div class="imgContainer" v-if="imgUrl">
         <img class="animalImg" v-bind:src="imgUrl" />
     </div>
+    <a class="unsplashLink" :href="unsplashUrl">View original</a>
 </template>
 
 <script>
@@ -12,7 +13,8 @@ export default {
     },
     data() {
         return {
-            imgUrl: null
+            imgUrl: null,
+            unsplashUrl: null
         }
     },
     methods: {
@@ -22,7 +24,9 @@ export default {
             fetch(`https://api.unsplash.com/search/photos?page=1&per_page=10&query=${query}&client_id=${appid}`)
                 .then(response => response.json())
                 .then(data => {
-                    this.imgUrl = data.results[Math.floor(Math.random() * data.results.length)].urls.regular
+                    const randomIndex = Math.floor(Math.random() * data.results.length)
+                    this.imgUrl = data.results[randomIndex].urls.regular;
+                    this.unsplashUrl = data.results[randomIndex].links.html
                 });
         }
     }
@@ -44,5 +48,13 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 7vh;
+}
+
+.unsplashLink {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin-top: 2vh;
+    justify-content: center;
 }
 </style>

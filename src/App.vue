@@ -49,11 +49,9 @@ export default {
   font-weight: normal;
 }
 
-a,
-.green {
+a {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+  color: #878a8c;
 }
 
 .body {
@@ -61,12 +59,6 @@ a,
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
 }
 
 @media (min-width: 1024px) {
