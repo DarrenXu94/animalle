@@ -5,9 +5,11 @@
             You guessed it in {{ getGuesses.length }} guess(es)!
             <NewGame />
         </div>
-        <div class="flex" v-for="row in board">
-            <div v-for="item in row">
-                <Tile :tileType="item.tileType" :tileLetter="item.tileLetter" />
+        <div class="boardRow">
+            <div class="flex" v-for="row in board">
+                <div v-for="item in row">
+                    <Tile :tileType="item.tileType" :tileLetter="item.tileLetter" />
+                </div>
             </div>
         </div>
     </div>
@@ -53,5 +55,8 @@ export default {
     font-size: 1.6rem;
     flex-direction: column;
     align-items: center;
+}
+.boardRow {
+    margin-top: 3vh;
 }
 </style>

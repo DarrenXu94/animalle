@@ -1,7 +1,7 @@
 
 <template>
   <div class="body">
-    <h1>Animalle</h1>
+    <h1>Animal-le</h1>
     <div v-if="gameState == GAME_STATE.waiting">
       <NewGame />
     </div>

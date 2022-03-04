@@ -33,11 +33,16 @@ export default {
 
 <style scoped>
 .animalImg {
-    width: 100%;
+    /* width: 100%; */
     height: 100%;
+    position: absolute;
+    top: 0;
 }
 .imgContainer {
-    max-width: 800px;
-    margin: auto;
+    height: 50vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 7vh;
 }
 </style>
