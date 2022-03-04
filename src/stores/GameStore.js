@@ -2,14 +2,29 @@ import { createStore } from "vuex";
 import { GAME_STATE, LIST_OF_ANIMALS, TILE_STATE } from "../consts/consts";
 const matchLetters = (guess, answer) => {
   const rowState = [];
+  const answerDict = {};
+  // Loop through and count number of chars in answer
+  for (let char of answer) {
+    if (answerDict[char]) {
+      answerDict[char] += 1;
+    } else {
+      answerDict[char] = 1;
+    }
+  }
+
   let hasLost = false;
+
+  // Loop through and match
   for (let [idx, char] of Object.entries(guess)) {
     if (answer[idx] == char) {
+      answerDict[char] -= 1;
       // Same letter same position
       rowState[idx] = { tileType: TILE_STATE.fit, tileLetter: char };
       continue;
     }
-    if (answer.includes(char)) {
+    if (answer.includes(char) && answerDict[char] >= 1) {
+      answerDict[char] -= 1;
+
       // Same letter diff position
       rowState[idx] = { tileType: TILE_STATE.match, tileLetter: char };
       hasLost = true;
@@ -57,19 +72,6 @@ const store = createStore({
       return state.correctWord;
     },
     getBoardState(state) {
-      // return the board
-      // const rows = [];
-      // // Why is a proxy returned?
-      // for (let guess of JSON.parse(JSON.stringify(state.guesses))) {
-      //   const { rowState, hasLost } = matchLetters(guess, state.correctWord);
-
-      //   if (!hasLost) {
-      //     console.log("You won!");
-      //   }
-      //   rows.push(rowState);
-      // }
-      // console.log(rows);
-      // return rows;
       return state.boardRows;
     },
   },

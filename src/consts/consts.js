@@ -1,4 +1,11 @@
-export const LIST_OF_ANIMALS = ["tiger", "hippo", "rhino", "elephant", "shark"];
+export const LIST_OF_ANIMALS = [
+  "tiger",
+  "hippo",
+  "rhino",
+  "elephant",
+  "shark",
+  "kangaroo",
+];
 
 export const GAME_STATE = {
   waiting: "waiting",
