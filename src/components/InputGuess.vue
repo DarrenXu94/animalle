@@ -1,5 +1,5 @@
 <template>
-    <div class="flex" v-if="!isGameOver">
+    <div class="flex just-cent" v-if="!isGameOver">
         <div v-for="(char, index) in answer">
             <Tile :tileType="TILE_STATE.none" :tileLetter="guess[index]" />
         </div>
@@ -94,5 +94,8 @@ export default {
 .invalid {
     text-align: center;
     font-size: 1.6rem;
+}
+.just-cent {
+    justify-content: center;
 }
 </style>

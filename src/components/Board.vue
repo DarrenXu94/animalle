@@ -15,9 +15,16 @@
         </div>
     </div>
     <!-- Display new guess -->
-    <div>
+    <div v-if="remainingGuesses > 0 && !isVictory">
         <InputGuess />
+        <div class="flex just-cent" v-for="item in new Array(remainingGuesses - 1)">
+            <div class="flex" v-for="char in new Array(correctWord.length)">
+                <Tile :tileType="TILE_STATE.none" />
+            </div>
+        </div>
+        <Keyboard />
     </div>
+    <!-- Extra guesses -->
     <div class="flex victoryMessage" v-if="remainingGuesses == 0">
         Game Over.
         <p>
@@ -29,11 +36,19 @@
 </template>
 
 <script>
+import { TILE_STATE } from "../consts/consts"
+
 import Tile from "./Tile.vue"
 import InputGuess from "./InputGuess.vue"
 import NewGame from "./NewGame.vue";
+import Keyboard from "./Keyboard.vue";
 export default {
     name: "Board",
+    data() {
+        return {
+            TILE_STATE
+        }
+    },
     computed: {
         board() {
             return this.$store.getters.getBoardState;
@@ -49,8 +64,6 @@ export default {
         },
         correctWord() {
             return this.$store.getters.getCorrectWord;
-
-
         },
         gameState() {
             return this.$store.getters.gameState;
@@ -59,7 +72,7 @@ export default {
             return this.$store.getters.getRemainingGuesses;
         },
     },
-    components: { Tile, InputGuess, NewGame }
+    components: { Tile, InputGuess, NewGame, Keyboard }
 }
 </script>
 
@@ -78,5 +91,8 @@ export default {
 }
 .answerBold {
     font-weight: bold;
+}
+.just-cent {
+    justify-content: center;
 }
 </style>

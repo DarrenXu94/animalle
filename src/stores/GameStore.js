@@ -149,7 +149,6 @@ const store = createStore({
     },
     startGame(context) {
       // Start a new game
-      // context.commit("UPDATE_GAME_STATE", GAME_STATE.playing);
       context.commit("RESET_ALL");
       const animal =
         LIST_OF_ANIMALS[Math.floor(Math.random() * LIST_OF_ANIMALS.length)];
