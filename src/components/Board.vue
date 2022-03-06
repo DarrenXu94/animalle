@@ -8,24 +8,26 @@
         <InvalidGuess />
 
         <div v-if="!isVictory" class="flex victoryMessage">Remaining Guesses {{ remainingGuesses }}</div>
-        <div class="boardRow flex just-cent">
-            <div class="flex" v-for="row in board">
-                <div v-for="item in row">
+        <div v-for="(_, idx) of new Array(allowedGuesses)">
+            <!-- If guesses has index then show that, otherwise show blanks -->
+            <!-- Existing guesses -->
+            <div class="flex" v-if="board[idx]">
+                <div v-for="item in board[idx]">
                     <Tile :tileType="item.tileType" :tileLetter="item.tileLetter" />
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Display new guess -->
-    <div v-if="remainingGuesses > 0 && !isVictory">
-        <InputGuess />
-    </div>
-    <div
-        class="flex just-cent"
-        v-for="item in new Array(remainingGuesses - ((isGameOver) ? 0 : 1))"
-    >
-        <div class="flex" v-for="char in new Array(correctWord.length)">
-            <Tile :tileType="TILE_STATE.none" />
+            <!-- Input row -->
+            <div class="flex" v-else-if="board.length == idx">
+                <div v-for="(_, idx) in new Array(correctWord.length)">
+                    <Tile :tileLetter="currentGuess[idx]" />
+                </div>
+            </div>
+            <!-- Future guesses -->
+            <div class="flex" v-else>
+                <div v-for="char in new Array(correctWord.length)">
+                    <Tile :tileType="TILE_STATE.none" />
+                </div>
+            </div>
         </div>
     </div>
 
@@ -49,7 +51,6 @@
 import { TILE_STATE, GAME_STATE } from "../consts/consts"
 
 import Tile from "./Tile.vue"
-import InputGuess from "./InputGuess.vue"
 import NewGame from "./NewGame.vue";
 import Keyboard from "./Keyboard.vue";
 import InvalidGuess from "./InvalidGuess.vue";
@@ -60,7 +61,37 @@ export default {
             TILE_STATE
         }
     },
+    created() {
+        window.addEventListener('keydown', this.inputHandler);
+    },
+    methods: {
+        inputHandler(event) {
+            if (event.key == "Backspace" || event.key == "Enter") {
+                this.$store.dispatch("currentGuessCharInput", event.key)
+            }
+
+            if (event.keyCode >= 65 && event.keyCode <= 90) { // if a letter pressed
+                this.$store.dispatch("currentGuessCharInput", event.key)
+            }
+        }
+    },
+    watch: {
+        gameState(old, newv) {
+            if (old == GAME_STATE.complete) {
+                window.removeEventListener('keydown', this.inputHandler)
+            } else {
+                window.addEventListener('keydown', this.inputHandler);
+
+            }
+        }
+    },
     computed: {
+        currentGuess() {
+            return this.$store.getters.getCurrentGuess;
+        },
+        allowedGuesses() {
+            return this.$store.getters.getAllowedGuessed;
+        },
         board() {
             return this.$store.getters.getBoardState;
         },
@@ -84,7 +115,7 @@ export default {
         }
 
     },
-    components: { Tile, InputGuess, NewGame, Keyboard, InvalidGuess }
+    components: { Tile, NewGame, Keyboard, InvalidGuess }
 }
 </script>
 

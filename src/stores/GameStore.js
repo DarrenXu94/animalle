@@ -56,6 +56,9 @@ const store = createStore({
     };
   },
   getters: {
+    getAllowedGuessed() {
+      return ALLOWED_GUESSES;
+    },
     getCurrentGuess(state) {
       return state.currentGuess;
     },
