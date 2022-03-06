@@ -45,6 +45,7 @@ const ALLOWED_GUESSES = 5;
 const store = createStore({
   state() {
     return {
+      currentGuess: "",
       guesses: [],
       boardRows: [],
       guessInvalid: false,
@@ -55,6 +56,9 @@ const store = createStore({
     };
   },
   getters: {
+    getCurrentGuess(state) {
+      return state.currentGuess;
+    },
     getRemainingGuesses(state) {
       return ALLOWED_GUESSES - state.guesses.length;
     },
@@ -99,6 +103,9 @@ const store = createStore({
     UPDATE_HAS_WON(state, payload) {
       state.hasWon = payload;
     },
+    UPDATE_CURRENT_GUESS(state, payload) {
+      state.currentGuess = payload;
+    },
     RESET_ALL(state) {
       state.guesses = [];
       state.boardRows = [];
@@ -108,6 +115,44 @@ const store = createStore({
     },
   },
   actions: {
+    currentGuessCharInput(context, payload) {
+      // Logic about current guess input here
+      console.log(payload);
+
+      let guess = context.state.currentGuess;
+
+      // Handle backspace
+      if (payload == "Backspace") {
+        const backSpacedGuess = guess.slice(0, -1);
+        context.commit("UPDATE_CURRENT_GUESS", backSpacedGuess);
+        return;
+      }
+
+      // Handle enter
+      if (payload == "Enter") {
+        if (
+          context.state.currentGuess.length == context.state.correctWord.length
+        ) {
+          this.dispatch("makeGuess", context.state.currentGuess);
+          return;
+        } else {
+          return;
+        }
+      }
+
+      // Handle exceeding length
+      if (
+        context.state.currentGuess.length >= context.state.correctWord.length
+      ) {
+        console.log("Too many chars");
+        return;
+      }
+
+      // Else handle character input
+      const newGuess = (guess += payload);
+      this.dispatch("newGuess");
+      context.commit("UPDATE_CURRENT_GUESS", newGuess);
+    },
     newGuess(context) {
       context.commit("UPDATE_GUESSINVALID", false);
     },
@@ -138,6 +183,7 @@ const store = createStore({
       }
       console.log(rows);
       context.commit("UPDATE_BOARDROWS", rows);
+      context.commit("UPDATE_CURRENT_GUESS", "");
 
       // Check if any guesses remaining
       if (context.state.guesses.length == ALLOWED_GUESSES) {

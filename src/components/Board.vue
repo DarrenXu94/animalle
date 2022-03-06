@@ -6,7 +6,7 @@
             <NewGame />
         </div>
         <div v-else class="flex victoryMessage">Remaining Guesses {{ remainingGuesses }}</div>
-        <div class="boardRow">
+        <div class="boardRow flex just-cent">
             <div class="flex" v-for="row in board">
                 <div v-for="item in row">
                     <Tile :tileType="item.tileType" :tileLetter="item.tileLetter" />
@@ -96,6 +96,8 @@ export default {
 }
 .boardRow {
     margin-top: 3vh;
+    flex-direction: column;
+    align-items: center;
 }
 .answerBold {
     font-weight: bold;

@@ -17,44 +17,18 @@ export default {
     },
     methods: {
         inputHandler(event) {
-            if (event.key == "Backspace") {
-                let guess = this.guess;
-                this.guess = guess.slice(0, -1)
-            }
-
-            if (event.key == "Enter") {
-                // Handle submit
-                if (this.guess.length == this.answer.length) {
-                    // Handle submitted
-                    this.$store.dispatch("makeGuess", this.guess)
-                    this.guess = ""
-                    return
-
-                } else {
-                    return
-                }
-            }
-
-            if (this.guess.length >= this.answer.length) {
-                console.log("too long")
-                return;
+            if (event.key == "Backspace" || event.key == "Enter") {
+                this.$store.dispatch("currentGuessCharInput", event.key)
             }
 
             if (event.keyCode >= 65 && event.keyCode <= 90) { // if a letter pressed
-                let guess = this.guess;
-                guess += event.key
-                this.guess = guess
-
-                // Remove invalid state
-                this.$store.dispatch("newGuess")
-
+                this.$store.dispatch("currentGuessCharInput", event.key)
             }
         }
     },
     watch: {
         gameState(old, newv) {
             if (old == GAME_STATE.complete) {
-
                 window.removeEventListener('keydown', this.inputHandler)
             } else {
                 window.addEventListener('keydown', this.inputHandler);
@@ -64,11 +38,13 @@ export default {
     },
     data() {
         return {
-            guess: "",
             TILE_STATE
         }
     },
     computed: {
+        guess() {
+            return this.$store.getters.getCurrentGuess;
+        },
         isGameOver() {
             return this.gameState == GAME_STATE.complete
         },
