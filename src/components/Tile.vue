@@ -33,6 +33,7 @@ export default {
     height: 50px;
     margin: 5px;
     padding: 50px;
+    transition: background-color 0.5s ease;
 }
 .letter {
     display: flex;

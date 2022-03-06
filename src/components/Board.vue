@@ -8,24 +8,10 @@
         <InvalidGuess />
 
         <div v-if="!isVictory" class="flex victoryMessage">Remaining Guesses {{ remainingGuesses }}</div>
-        <div v-for="(_, idx) of new Array(allowedGuesses)">
-            <!-- If guesses has index then show that, otherwise show blanks -->
-            <!-- Existing guesses -->
-            <div class="flex" v-if="board[idx]">
-                <div v-for="item in board[idx]">
-                    <Tile :tileType="item.tileType" :tileLetter="item.tileLetter" />
-                </div>
-            </div>
-            <!-- Input row -->
-            <div class="flex" v-else-if="board.length == idx">
+        <div v-for="(_, row) of new Array(allowedGuesses)">
+            <div class="flex">
                 <div v-for="(_, idx) in new Array(correctWord.length)">
-                    <Tile :tileLetter="currentGuess[idx]" />
-                </div>
-            </div>
-            <!-- Future guesses -->
-            <div class="flex" v-else>
-                <div v-for="char in new Array(correctWord.length)">
-                    <Tile :tileType="TILE_STATE.none" />
+                    <Tile :tileLetter="getTileLetter(row, idx)" :tileType="getTileType(row, idx)" />
                 </div>
             </div>
         </div>
@@ -65,6 +51,20 @@ export default {
         window.addEventListener('keydown', this.inputHandler);
     },
     methods: {
+        getTileType(row, idx) {
+            if (this.board[row]) {
+                return this.board[row][idx].tileType
+            }
+        },
+        getTileLetter(row, idx) {
+            if (this.board[row]) {
+                return this.board[row][idx].tileLetter
+            }
+            if (this.currentGuess && row == this.board.length) {
+                return this.currentGuess[idx]
+            }
+
+        },
         inputHandler(event) {
             if (event.key == "Backspace" || event.key == "Enter") {
                 this.$store.dispatch("currentGuessCharInput", event.key)
