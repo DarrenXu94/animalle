@@ -5,7 +5,9 @@
             You guessed it in {{ getGuesses.length }} guess(es)!
             <NewGame />
         </div>
-        <div v-else class="flex victoryMessage">Remaining Guesses {{ remainingGuesses }}</div>
+        <InvalidGuess />
+
+        <div v-if="!isVictory" class="flex victoryMessage">Remaining Guesses {{ remainingGuesses }}</div>
         <div class="boardRow flex just-cent">
             <div class="flex" v-for="row in board">
                 <div v-for="item in row">
@@ -50,6 +52,7 @@ import Tile from "./Tile.vue"
 import InputGuess from "./InputGuess.vue"
 import NewGame from "./NewGame.vue";
 import Keyboard from "./Keyboard.vue";
+import InvalidGuess from "./InvalidGuess.vue";
 export default {
     name: "Board",
     data() {
@@ -78,9 +81,10 @@ export default {
         },
         remainingGuesses() {
             return this.$store.getters.getRemainingGuesses;
-        },
+        }
+
     },
-    components: { Tile, InputGuess, NewGame, Keyboard }
+    components: { Tile, InputGuess, NewGame, Keyboard, InvalidGuess }
 }
 </script>
 

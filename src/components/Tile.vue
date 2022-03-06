@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .tile {
-    background: #86888a;
+    background-color: #86888a;
     width: 50px;
     height: 50px;
     margin: 5px;
@@ -45,10 +45,10 @@ export default {
 }
 
 .fit {
-    background: #6aaa64;
+    background-color: #6aaa64;
 }
 
 .match {
-    background: #c9b458;
+    background-color: #c9b458;
 }
 </style>

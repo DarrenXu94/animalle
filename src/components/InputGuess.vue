@@ -4,7 +4,6 @@
             <Tile :tileType="TILE_STATE.none" :tileLetter="guess[index]" />
         </div>
     </div>
-    <div class="invalid" v-if="invalidGuess">Invalid guess</div>
 </template>
 
 <script>
@@ -54,10 +53,7 @@ export default {
         answer() {
             return this.$store.getters.getCorrectWord;
         },
-        invalidGuess() {
-            return this.$store.getters.invalidGuess;
 
-        }
     },
     components: { Tile }
 }
@@ -67,10 +63,7 @@ export default {
 .flex {
     display: flex;
 }
-.invalid {
-    text-align: center;
-    font-size: 1.6rem;
-}
+
 .just-cent {
     justify-content: center;
 }
