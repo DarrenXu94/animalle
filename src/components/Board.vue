@@ -17,13 +17,21 @@
     <!-- Display new guess -->
     <div v-if="remainingGuesses > 0 && !isVictory">
         <InputGuess />
-        <div class="flex just-cent" v-for="item in new Array(remainingGuesses - 1)">
-            <div class="flex" v-for="char in new Array(correctWord.length)">
-                <Tile :tileType="TILE_STATE.none" />
-            </div>
+    </div>
+    <div
+        class="flex just-cent"
+        v-for="item in new Array(remainingGuesses - ((isGameOver) ? 0 : 1))"
+    >
+        <div class="flex" v-for="char in new Array(correctWord.length)">
+            <Tile :tileType="TILE_STATE.none" />
         </div>
+    </div>
+
+    <!-- Keyboard -->
+    <div v-if="remainingGuesses > 0 && !isVictory">
         <Keyboard />
     </div>
+
     <!-- Extra guesses -->
     <div class="flex victoryMessage" v-if="remainingGuesses == 0">
         Game Over.
@@ -36,7 +44,7 @@
 </template>
 
 <script>
-import { TILE_STATE } from "../consts/consts"
+import { TILE_STATE, GAME_STATE } from "../consts/consts"
 
 import Tile from "./Tile.vue"
 import InputGuess from "./InputGuess.vue"
