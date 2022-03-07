@@ -29,10 +29,16 @@ export default {
 <style scoped>
 .tile {
     background-color: #86888a;
-    width: 50px;
+    min-width: 5px;
     height: 50px;
-    margin: 5px;
-    padding: 50px;
+
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    max-width: 50px;
+    /* width: 50px;
+    height: 50px;
+    padding: 50px; */
     transition: background-color 0.5s ease;
 }
 .letter {
@@ -42,7 +48,8 @@ export default {
     height: 100%;
     text-transform: uppercase;
     color: white;
-    font-size: 3.2rem;
+    font-weight: bold;
+    /* font-size: 3.2rem; */
 }
 
 .fit {

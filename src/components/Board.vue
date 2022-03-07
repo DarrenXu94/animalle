@@ -8,8 +8,8 @@
         <InvalidGuess />
 
         <div v-if="!isVictory" class="flex victoryMessage">Remaining Guesses {{ remainingGuesses }}</div>
-        <div v-for="(_, row) of new Array(allowedGuesses)">
-            <div class="flex">
+        <div class="flex just-cent" v-for="(_, row) of new Array(allowedGuesses)">
+            <div class="tileRow">
                 <div v-for="(_, idx) in new Array(correctWord.length)">
                     <Tile :tileLetter="getTileLetter(row, idx)" :tileType="getTileType(row, idx)" />
                 </div>
@@ -139,5 +139,13 @@ export default {
 }
 .just-cent {
     justify-content: center;
+}
+
+.tileRow {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    width: 100%;
+    column-gap: 5px;
 }
 </style>
